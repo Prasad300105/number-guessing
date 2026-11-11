@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Number Guessing Game</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <div class="game-container">
+
+        <div class="game-icon">🎯</div>
+
+        <h1>Number Guessing Game</h1>
+
+        <p class="subtitle">
+            Guess the secret number between 1 and 100!
+        </p>
+
+        <!-- Game Information -->
+        <div class="game-info">
+
+            <div class="info-box">
+                <h3>Range</h3>
+                <p>1 - 100</p>
+            </div>
+
+            <div class="info-box">
+                <h3>Attempts</h3>
+                <p>{{ attempts }}</p>
+            </div>
+
+        </div>
+
+        <!-- Guess Input -->
+        {% if not game_over %}
+
+        <form action="{{ url_for('guess') }}" method="POST">
+
+            <label for="guess">Enter Your Guess</label>
+
+            <input type="number" id="guess" name="guess" min="1" max="100" placeholder="Enter a number..." required autofocus>
+
+            <button type="submit" class="guess-btn">
+                Submit Guess
+            </button>
+
+        </form>
+
+        {% endif %}
+
+        <!-- Result Message -->
+        <div class="message {% if won %}success{% else %}hint{% endif %}">
+            {{ message }}
+        </div>
+
+        <!-- Guess History -->
+        <div class="history-section">
+
+            <h2>📋 Guess History</h2>
+
+            {% if guess_history %}
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Attempt</th>
+                        <th>Guessed Number</th>
+                        <th>Result</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    {% for guess in guess_history %}
+
+                    <tr>
+                        <td>{{ loop.index }}</td>
+
+                        <td>{{ guess.number }}</td>
+
+                        <td>
+                            {% if guess.result == "Too High" %}
+                            <span class="high">Too High ⬆️</span> {% elif guess.result == "Too Low" %}
+                            <span class="low">Too Low ⬇️</span> {% else %}
+                            <span class="correct">Correct 🎉</span> {% endif %}
+                        </td>
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+            {% else %}
+
+            <p class="empty">
+                No guesses yet. Start playing!
+            </p>
+
+            {% endif %}
+
+        </div>
+
+        <!-- Restart Button -->
+        {% if game_over %}
+
+        <a href="{{ url_for('restart') }}" class="restart-btn">
+            🔄 Play Again
+        </a> {% endif %}
+
+        <p class="footer">
+            Have fun guessing! 🎮
+        </p>
+
+    </div>
+
+</body>
+
+</html>

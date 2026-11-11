@@ -104,6 +104,7 @@ The main objective of this project is to develop an interactive number guessing 
 ## 👨‍💻 Author
 
 Developed as a Python Web Development Project.
+
 By 
 Gogu Prasad
 B. Tech Final Year(CSE)
